@@ -1,0 +1,31 @@
+#!/bin/bash
+case $1 in
+	''|-h|help|?)
+		echo "Usage: ${0##/*/} <script_number> [-n|--dry-run]"
+		echo "Usage: ${0##/*/} add <script>"
+		echo "Usage: ${0##/*/} edit|-e|help|-h|?"
+		echo "Usage: ${0##/*/} <regex> [-r|-R|run]"
+		cat -n $0 | sed -n "$(expr $(sed -n '/^exit/ =' $0) + 1)",\$p | less;;
+	add) shift; echo "$@" >> $0;;
+	edit|-e) vim $0;;
+	[0-9]*)
+		script=$(cat $0 | sed -n $1p)
+		case $2 in
+			-n|--dry-run) echo $script;;
+			*) shift; eval $script $@;;
+		esac;;
+	*) case $2 in
+		-r|-R|run)
+			[ "$2" = "-R" ] || grep -iE "$1" $0
+			script=$(grep -iE "$1" $0 --color=none)
+			shift
+			shift
+			eval $script $@
+			;;
+		''|*)
+			grep -niE "$1" $0
+			;;
+		esac;;
+esac;
+
+exit ##### archive starts here #####
