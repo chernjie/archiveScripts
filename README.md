@@ -31,3 +31,6 @@ $ archiveScripts randomnamedkey -R
 a single line command line that you want to archive #randomnamedkey
 
 ```
+
+Alternatives:
+http://www.logicalpoetry.com/bashalias/
